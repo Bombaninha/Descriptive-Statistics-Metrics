@@ -1,6 +1,6 @@
-FLAGS=-O3
+FLAGS=-fopenmp -O3
 
-CC=icc
+CC=gcc
 
 RM=rm -f
 
