@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <omp.h>
 
 #ifndef DEBUG
 #define DEBUG 0
@@ -155,6 +156,7 @@ void mat_LU(mat A, mat L, mat U, mat P, int n) {
 int main() {
   int n;
   mat A, L, P, U;
+  double start, end;
 
   fscanf(stdin,"%d",&n);
   A = mat_new(n);
@@ -164,8 +166,11 @@ int main() {
 
   mat_gen(A,n);
 
+  start = omp_get_wtime();
   mat_LU(A, L, U, P, n);
-
+  end = omp_get_wtime();
+ 
+  printf("Work took %f seconds\n", end - start);
   mat_show(P,"P",0,n);
   printf("\n");
   mat_show(L,"L",0,n);
@@ -179,4 +184,3 @@ int main() {
  
   return 0;
 }
-
