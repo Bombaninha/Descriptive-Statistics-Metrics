@@ -169,13 +169,13 @@ int main() {
   start = omp_get_wtime();
   mat_LU(A, L, U, P, n);
   end = omp_get_wtime();
- 
-  printf("Work took %f seconds\n", end - start);
+
   mat_show(P,"P",0,n);
   printf("\n");
   mat_show(L,"L",0,n);
   printf("\n");
   mat_show(U,"U",0,n);
+  printf("Work took %f seconds\n", end - start);
 
   mat_del(A); 
   mat_del(L);
