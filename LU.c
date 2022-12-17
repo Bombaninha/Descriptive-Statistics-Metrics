@@ -130,6 +130,8 @@ void mat_LU(mat A, mat L, mat U, mat P, int n) {
   for(i=0; i<n; i++) {
     L[i][i] = 1;
   }
+  
+  #pragma omp paralel for private(i, j, k, s, L, U) reduce(+:s) schedule(static, 2)
   for(i=0; i<n; i++) {
     for(j=0; j<n; j++) {
       double s;
