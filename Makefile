@@ -18,3 +18,7 @@ run:
 
 clean:
 	rm $(EXE)
+
+profile:
+	./$(EXE) < input
+	gprof $(EXE) < input gmon.out > analise.txt

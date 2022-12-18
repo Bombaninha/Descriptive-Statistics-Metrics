@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <omp.h>
 
 void bubble_sort (double *matriz, int tam) {
     int i, j; 
@@ -72,6 +73,7 @@ double moda_aux(double *matriz, int lin) {
     cont = (double*)malloc(lin * sizeof(double));
 	float conta = 0, moda = 0;
 	
+    //#pragma omp parallel for private(i, j) 
 	for(i = 0; i < lin; i++) {
         for(j = i + 1; j < lin; j++) {
 		    if(matriz[i] == matriz[j]) {
@@ -97,6 +99,7 @@ double moda_aux(double *matriz, int lin) {
 
 void calcula_moda(double *matriz, double *moda, int lin, int col) {
     int i;
+    #pragma omp parallel for private(i)
     for(i = 0; i < col; i++) {
         moda[i] = moda_aux(matriz + (i * lin), lin);
     }
@@ -151,6 +154,7 @@ int main(int argc,char **argv){
         }
     }
 
+    double t0 = omp_get_wtime();
     calcula_media(matriz, media, lin,col);
     calcula_media_harmonica(matriz, media_har, lin, col);
     ordena_colunas(matriz, lin, col);
@@ -159,6 +163,7 @@ int main(int argc,char **argv){
     calcula_variancia(matriz, media, variancia, lin, col);
     calcula_desvio_padrao(variancia, dp, col);
     calcula_coeficiente_variacao(media, dp, cv, col);
+    double tf = omp_get_wtime();
 
     for(i = 0; i < col; i++)
         printf("%.1lf\t", media[i]); // Imprime as médias aritméticas de cada coluna
@@ -187,6 +192,8 @@ int main(int argc,char **argv){
     for(i = 0; i < col; i++)
         printf("%.1lf\t", cv[i]); // Imprime os coeficientes de variação de cada coluna
     printf("\n");
+
+    printf("Tempo de exec: %lf\n", tf-t0);
 
     // Desaloca memória
     free(matriz);
