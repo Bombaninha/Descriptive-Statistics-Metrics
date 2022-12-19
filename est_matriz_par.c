@@ -21,6 +21,7 @@ void bubble_sort (double *matriz, int tam) {
 void ordena_colunas(double *matriz, int lin, int col) {
     int i;
     
+    #pragma omp parallel for private(i) schedule(static)
     for(i = 0; i < col; i++) {    
         //manda o endereco do primeiro elemento da coluna, limites inf e sup e a largura da matriz
         bubble_sort(&matriz[i * lin], lin);
@@ -98,6 +99,7 @@ double moda_aux(double *matriz, int lin) {
 
 void calcula_moda(double *matriz, double *moda, int lin, int col) {
     int i;
+    #pragma omp parallel for private(i) schedule(static)
     for(i = 0; i < col; i++) {
         moda[i] = moda_aux(matriz + (i * lin), lin);
     }
